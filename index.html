@@ -1,0 +1,1229 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Orli Lot – skoki narciarskie na R36S</title>
+<meta name="description" content="Orli Lot – skoki narciarskie w 3D na konsolkę R36S. 27 prawdziwych skoczni, wybicie, lot, telemark i noty sędziów. Pobierz za darmo.">
+<meta name="theme-color" content="#070b18">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="Orli Lot – skoki narciarskie na R36S">
+<meta property="og:description" content="27 prawdziwych skoczni, wybicie co do setnej, wiatr, telemark i noty sędziów. Za darmo.">
+<meta property="og:image" content="https://sebastian-nni.github.io/orlilot/img/lot-planica.jpg">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:locale:alternate" content="en_GB">
+<link rel="alternate" hreflang="pl" href="https://sebastian-nni.github.io/orlilot/">
+<link rel="alternate" hreflang="en" href="https://sebastian-nni.github.io/orlilot/en.html">
+<link rel="alternate" hreflang="x-default" href="https://sebastian-nni.github.io/orlilot/en.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230b1222'/%3E%3Cpolygon points='8,44 42,10 34,30' fill='%2348ceff'/%3E%3Cpolygon points='16,46 54,20 44,38' fill='%2348ceff' fill-opacity='.7'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --tlo: #070b18;
+    --tlo2: #0b1222;
+    --karta: #0f172b;
+    --karta2: #131d36;
+    --linia: rgba(255, 255, 255, 0.08);
+    --linia2: rgba(255, 255, 255, 0.14);
+    --tekst: #eef3ff;
+    --tekst2: #9aa9c9;
+    --tekst3: #6d7c9c;
+    --akcent: #48ceff;
+    --akcent-tlo: rgba(72, 206, 255, 0.12);
+    --akcent-jasny: #9be6ff;
+    --czerwony: #ff5a6a;
+    --czerwony-tlo: rgba(255, 90, 106, 0.14);
+    --zielony: #4fe3a2;
+    --zielony-tlo: rgba(79, 227, 162, 0.13);
+    --zolty: #ffd166;
+    --zolty-tlo: rgba(255, 209, 102, 0.14);
+    --fiolet: #b79bff;
+    --fiolet-tlo: rgba(183, 155, 255, 0.14);
+    --naglowek: "Unbounded", "Manrope", system-ui, sans-serif;
+    --szer: 1180px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--tlo);
+    color: var(--tekst);
+    font: 400 16px/1.6 "Manrope", system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: inherit; }
+  .wrap { width: min(var(--szer), 100% - 32px); margin-inline: auto; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* nawigacja */
+  .nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    transition: background .3s, border-color .3s;
+    border-bottom: 1px solid transparent;
+  }
+  .nav.przewiniete {
+    background: rgba(7, 11, 24, 0.72);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    backdrop-filter: blur(14px) saturate(140%);
+    border-color: var(--linia);
+  }
+  .nav .wrap { display: flex; align-items: center; gap: 28px; height: 92px; transition: height .3s; }
+  .nav.przewiniete .wrap { height: 68px; }
+  .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+  .ik { width: 18px; height: 18px; flex: none; }
+  .logo { display: flex; align-items: center; text-decoration: none; }
+  .logo-nap { height: 34px; width: 218px; flex: none; }
+  .nav .logo-nap { height: 42px; width: 269px; }
+  .nav ul { display: flex; gap: 26px; margin: 0 0 0 auto; padding: 0; list-style: none; }
+  .nav ul a { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; text-decoration: none; color: var(--tekst2); font-weight: 600; font-size: 15px; transition: color .2s; }
+  .nav ul a .ik { color: var(--akcent); }
+  .nav ul a:hover { color: var(--tekst); }
+  .nav .btn { padding: 10px 18px; font-size: 14px; }
+  .jezyk { display: flex; gap: 2px; padding: 3px; border-radius: 999px; border: 1px solid var(--linia2); }
+  .jezyk a { padding: 7px 10px; border-radius: 999px; text-decoration: none; color: var(--tekst2); font-size: 12.5px; font-weight: 800; line-height: 1; letter-spacing: .06em; transition: color .2s, background .2s; }
+  .jezyk a:hover { color: var(--tekst); }
+  .jezyk a[aria-current] { background: var(--akcent-tlo); color: var(--akcent-jasny); }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 15px 26px; border-radius: 999px;
+    font: 700 16px/1 "Manrope", sans-serif; text-decoration: none;
+    border: 0; cursor: pointer;
+    transition: transform .2s, background .2s, color .2s, border-color .2s;
+  }
+  .btn svg { width: 18px; height: 18px; flex: none; }
+  .btn-glowny { background: var(--akcent); color: #04121f; }
+  .btn-glowny:hover { background: var(--akcent-jasny); transform: translateY(-2px); }
+  .btn-drugi { background: transparent; color: var(--tekst); border: 1px solid var(--linia2); }
+  .btn-drugi:hover { border-color: var(--akcent); color: var(--akcent-jasny); transform: translateY(-2px); }
+  .btn small { font-weight: 600; font-size: 13px; opacity: .7; }
+  .btn:focus-visible, a:focus-visible, button:focus-visible { outline: 3px solid var(--akcent-jasny); outline-offset: 3px; }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px; border-radius: 999px;
+    background: var(--akcent-tlo); color: var(--akcent-jasny);
+    font-size: 13px; font-weight: 700; letter-spacing: .02em;
+  }
+  .chip .kropka { width: 7px; height: 7px; border-radius: 50%; background: var(--zielony); box-shadow: 0 0 0 4px var(--zielony-tlo); }
+
+  /* hero */
+  .hero {
+    position: relative; isolation: isolate;
+    min-height: 100vh; min-height: 100svh;
+    padding: 116px 0 170px;
+    display: flex; align-items: center;
+    overflow: hidden;
+    background:
+      radial-gradient(900px 520px at 78% 18%, rgba(72, 206, 255, 0.16), transparent 60%),
+      radial-gradient(700px 500px at 12% 8%, rgba(120, 110, 255, 0.12), transparent 60%),
+      linear-gradient(180deg, #060915 0%, #0a1226 70%, #0d1730 100%);
+  }
+  #snieg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+  .skocznia { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 280px; z-index: -2; pointer-events: none; }
+  .hero .wrap { display: grid; grid-template-columns: 1.08fr .92fr; align-items: center; gap: 60px; }
+  .hero h1 { margin: 26px 0 22px; font: 800 clamp(32px, 3.9vw, 54px)/1.1 var(--naglowek); letter-spacing: -.025em; }
+  .opis { margin: 0 0 36px; max-width: 520px; color: var(--tekst2); font-size: 17px; }
+  .przyciski { display: flex; flex-wrap: wrap; gap: 12px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 30px 0 0; padding: 0; list-style: none; color: var(--tekst2); font-size: 14px; font-weight: 600; }
+  .meta li { display: flex; align-items: center; gap: 8px; }
+  .meta svg { width: 16px; height: 16px; color: var(--akcent); }
+
+  /* konsola R36S */
+  .scena { display: flex; flex-direction: column; align-items: center; perspective: 1400px; }
+  .konsola {
+    --u: min(1px, calc((100vw - 64px) / 330));
+    --czern: #17181c;
+    position: relative;
+    width: calc(330 * var(--u)); height: calc(490 * var(--u));
+    border-radius: calc(16 * var(--u)) calc(16 * var(--u)) calc(46 * var(--u)) calc(46 * var(--u));
+    background: #f5f6f8;
+    box-shadow:
+      inset 0 0 0 calc(1 * var(--u)) #fff,
+      calc(5 * var(--u)) calc(2 * var(--u)) 0 #d3d6dc,
+      0 50px 90px -30px rgba(0, 0, 0, .75),
+      0 0 120px -20px rgba(72, 206, 255, .22);
+    transform: rotateY(var(--ry, -7deg)) rotateX(var(--rx, 3deg));
+    transition: transform .5s cubic-bezier(.2, .8, .2, 1);
+    animation: unos 7s ease-in-out infinite;
+  }
+  @keyframes unos { 50% { translate: 0 calc(-10 * var(--u)); } }
+  .konsola::before {
+    content: ""; position: absolute; right: calc(-8 * var(--u)); top: calc(62 * var(--u));
+    width: calc(4 * var(--u)); height: calc(52 * var(--u));
+    background: #2a2c31; border-radius: calc(3 * var(--u));
+  }
+  .konsola::after {
+    content: ""; position: absolute; left: 0; right: 0; top: calc(248 * var(--u)); height: calc(1 * var(--u));
+    background: #dfe2e7;
+  }
+  .ramka {
+    position: absolute; left: calc(6 * var(--u)); right: calc(6 * var(--u)); top: calc(6 * var(--u)); height: calc(234 * var(--u));
+    background: var(--czern);
+    border-radius: calc(12 * var(--u));
+  }
+  .ekran {
+    position: absolute; left: calc(14 * var(--u)); right: calc(14 * var(--u)); top: calc(8 * var(--u)); height: calc(218 * var(--u));
+    overflow: hidden; background: #000;
+  }
+  .ekran img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    opacity: 0; transition: opacity .6s ease;
+  }
+  .ekran img.widoczny { opacity: 1; }
+  .ekran .obudzona { position: absolute; inset: 0; display: grid; place-items: center; background: #0b1222; }
+  .ekran .obudzona svg { width: 72%; height: auto; }
+
+  .kl { position: absolute; border: 0; padding: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+
+  .krzyzak { position: absolute; left: calc(16 * var(--u)); top: calc(265 * var(--u)); width: calc(88 * var(--u)); height: calc(88 * var(--u)); }
+  .krzyzak .srodek {
+    position: absolute; left: calc(28 * var(--u)); top: calc(28 * var(--u)); width: calc(32 * var(--u)); height: calc(32 * var(--u));
+    background: var(--czern);
+  }
+  .krzyzak .srodek::after {
+    content: ""; position: absolute; left: calc(7 * var(--u)); top: calc(7 * var(--u)); width: calc(18 * var(--u)); height: calc(18 * var(--u));
+    border-radius: 50%; background: #0c0d10;
+  }
+  .krzyzak .kl { background: var(--czern); transition: transform .08s, background .15s; }
+  .krzyzak .kl::after { content: ""; position: absolute; left: 50%; top: 50%; border: calc(4.5 * var(--u)) solid transparent; translate: -50% -50%; }
+  .krzyzak .g, .krzyzak .d { left: calc(28 * var(--u)); width: calc(32 * var(--u)); height: calc(29 * var(--u)); }
+  .krzyzak .g { top: 0; border-radius: calc(6 * var(--u)) calc(6 * var(--u)) 0 0; }
+  .krzyzak .d { bottom: 0; border-radius: 0 0 calc(6 * var(--u)) calc(6 * var(--u)); }
+  .krzyzak .l, .krzyzak .p { top: calc(28 * var(--u)); width: calc(29 * var(--u)); height: calc(32 * var(--u)); }
+  .krzyzak .l { left: 0; border-radius: calc(6 * var(--u)) 0 0 calc(6 * var(--u)); }
+  .krzyzak .p { right: 0; border-radius: 0 calc(6 * var(--u)) calc(6 * var(--u)) 0; }
+  .krzyzak .g::after { border-bottom-color: #4b4e56; margin-top: calc(-3 * var(--u)); }
+  .krzyzak .d::after { border-top-color: #4b4e56; margin-top: calc(3 * var(--u)); }
+  .krzyzak .l::after { border-right-color: #4b4e56; margin-left: calc(-3 * var(--u)); }
+  .krzyzak .p::after { border-left-color: #4b4e56; margin-left: calc(3 * var(--u)); }
+  .krzyzak .kl.wcisniety, .krzyzak .kl:active { background: #34363d; }
+
+  .glosnik { position: absolute; left: calc(132 * var(--u)); top: calc(273 * var(--u)); width: calc(66 * var(--u)); display: grid; gap: calc(7 * var(--u)); }
+  .glosnik div { display: flex; justify-content: space-between; gap: calc(5 * var(--u)); }
+  .glosnik i { height: calc(5 * var(--u)); border-radius: 99px; background: #26282d; flex: 1; }
+  .glosnik i.kr { flex: 0 0 calc(7 * var(--u)); }
+
+  .okragly {
+    position: absolute; width: calc(30 * var(--u)); height: calc(30 * var(--u)); border-radius: 50%;
+    background: var(--czern); transition: transform .08s, background .15s;
+  }
+  .okragly.wcisniety, .okragly:active { background: #34363d; transform: scale(.95); }
+  .okragly.fn { left: calc(150 * var(--u)); top: calc(329 * var(--u)); }
+  .okragly.se { left: calc(120 * var(--u)); top: calc(361 * var(--u)); }
+  .okragly.st { left: calc(180 * var(--u)); top: calc(361 * var(--u)); }
+  .dziurka { position: absolute; left: calc(163.5 * var(--u)); top: calc(374.5 * var(--u)); width: calc(3 * var(--u)); height: calc(3 * var(--u)); border-radius: 50%; background: #3a3c42; }
+  .napis { position: absolute; width: calc(70 * var(--u)); text-align: center; font: 500 calc(10.5 * var(--u))/1 "Manrope", sans-serif; color: #5f636b; }
+  .napis.n-fn { left: calc(130 * var(--u)); top: calc(315 * var(--u)); }
+  .napis.n-se { left: calc(100 * var(--u)); top: calc(396 * var(--u)); }
+  .napis.n-st { left: calc(160 * var(--u)); top: calc(396 * var(--u)); }
+
+  .abxy { position: absolute; left: calc(216 * var(--u)); top: calc(263 * var(--u)); width: calc(100 * var(--u)); height: calc(100 * var(--u)); }
+  .abxy .kl {
+    width: calc(33 * var(--u)); height: calc(33 * var(--u)); border-radius: 50%;
+    background: var(--czern);
+    font: 800 calc(19 * var(--u))/1 "Manrope", sans-serif;
+    transition: transform .08s, background .15s;
+  }
+  .abxy .kl.wcisniety, .abxy .kl:active { background: #34363d; transform: scale(.95); }
+  .abxy .x { left: calc(33.5 * var(--u)); top: 0; color: #2a84ff; }
+  .abxy .y { left: 0; top: calc(33.5 * var(--u)); color: #4ad65a; }
+  .abxy .a { right: 0; top: calc(33.5 * var(--u)); color: #ff3338; }
+  .abxy .b { left: calc(33.5 * var(--u)); bottom: 0; color: #ffdc20; }
+  .abxy .a::before {
+    content: ""; position: absolute; inset: calc(-4 * var(--u)); border-radius: 50%;
+    border: calc(2 * var(--u)) solid #ff3338; opacity: 0;
+    animation: puls 2.6s ease-out infinite;
+  }
+  @keyframes puls { 0% { opacity: .9; transform: scale(.85); } 70%, 100% { opacity: 0; transform: scale(1.35); } }
+
+  .galka {
+    position: absolute; top: calc(368 * var(--u)); width: calc(84 * var(--u)); height: calc(84 * var(--u)); border-radius: 50%;
+    background: #fff; border: calc(5 * var(--u)) solid #b4b7bd;
+  }
+  .galka::after {
+    content: ""; position: absolute; inset: calc(6 * var(--u)); border-radius: 50%;
+    background: var(--czern);
+    box-shadow: inset 0 0 0 calc(10 * var(--u)) #0e0f12;
+  }
+  .galka.l { left: calc(14 * var(--u)); }
+  .galka.p { right: calc(14 * var(--u)); }
+
+  .konsola.mala { --u: min(.86px, calc((100vw - 64px) / 330)); animation: none; transform: none; margin-inline: auto; box-shadow: calc(4 * var(--u)) calc(2 * var(--u)) 0 #d3d6dc, 0 30px 60px -28px rgba(0, 0, 0, .8); }
+  .konsola.mala .abxy .a::before { animation: none; }
+  .konsola.mala .kl { cursor: default; }
+  .konsola.mala .abxy .kl { display: grid; place-items: center; }
+  .konsola.mala .swieci { background: var(--akcent) !important; color: #04121f !important; }
+  .konsola.mala .krzyzak.swieci { background: none !important; }
+  .konsola.mala .krzyzak.swieci .kl, .konsola.mala .krzyzak.swieci .srodek { background: var(--akcent); }
+  .konsola.mala .krzyzak.swieci .srodek::after { background: #1fa8dd; }
+  .konsola.mala .galka.swieci { background: #fff !important; border-color: var(--akcent); }
+  .konsola.mala .galka.swieci::after { background: var(--akcent); box-shadow: inset 0 0 0 calc(10 * var(--u)) #1fa8dd; }
+  .konsola.mala .tyl {
+    position: absolute; top: calc(-13 * var(--u)); left: calc(20 * var(--u)); width: calc(52 * var(--u)); height: calc(13 * var(--u)); border-radius: calc(5 * var(--u)) calc(5 * var(--u)) 0 0;
+    background: #c8cbd1;
+    display: grid; place-items: center; font: 800 calc(9 * var(--u))/1 "Manrope", sans-serif; color: #33353b;
+  }
+  .konsola.mala .tyl.t-r { left: auto; right: calc(20 * var(--u)); }
+  .konsola.mala .tyl.swieci { background: var(--akcent); }
+
+  .podpis { margin-top: 34px; text-align: center; min-height: 64px; }
+  .podpis b { display: block; font: 700 18px/1.2 var(--naglowek); letter-spacing: .01em; }
+  .podpis span { color: var(--tekst2); font-size: 14px; font-weight: 600; }
+  .kropki { display: flex; gap: 6px; justify-content: center; margin-top: 12px; }
+  .kropki button { width: 8px; height: 8px; border-radius: 99px; border: 0; padding: 0; background: var(--linia2); cursor: pointer; transition: width .3s, background .3s; }
+  .kropki button.akt { width: 26px; background: var(--akcent); }
+
+  /* liczby */
+  .liczby { border-block: 1px solid var(--linia); background: var(--tlo2); }
+  .liczby ul { display: grid; grid-template-columns: repeat(5, 1fr); margin: 0 auto; padding: 0; list-style: none; }
+  .liczby li { padding: 30px 16px; text-align: center; border-left: 1px solid var(--linia); }
+  .liczby li:first-child { border-left: 0; }
+  .liczby .ik { width: 22px; height: 22px; margin: 0 auto 12px; display: block; color: var(--akcent); }
+  .liczby b { display: block; font: 800 clamp(30px, 4vw, 46px)/1 var(--naglowek); }
+  .liczby b em { font-style: normal; color: var(--akcent); }
+  .liczby span { display: block; margin-top: 8px; color: var(--tekst2); font-size: 14px; font-weight: 600; }
+
+  /* sekcje */
+  section.blok { padding: 110px 0; }
+  .etykieta { display: inline-block; margin-bottom: 14px; color: var(--akcent); font-size: 13px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+  h2 { margin: 0 0 16px; font: 800 clamp(32px, 4.6vw, 54px)/1.05 var(--naglowek); letter-spacing: -.025em; }
+  .wstep { margin: 0 0 54px; max-width: 600px; color: var(--tekst2); font-size: 18px; }
+
+  /* kroki skoku */
+  .kroki { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; margin: 0; padding: 0; list-style: none; }
+  .kroki::before {
+    content: ""; position: absolute; left: 4%; right: 4%; top: 19px; height: 2px;
+    background: repeating-linear-gradient(90deg, var(--akcent) 0 8px, transparent 8px 16px);
+    opacity: .45;
+  }
+  .krok { position: relative; }
+  .krok .nr {
+    position: relative; display: grid; place-items: center;
+    width: 40px; height: 40px; margin-bottom: 20px; border-radius: 50%;
+    background: var(--tlo); border: 2px solid var(--akcent); color: var(--akcent-jasny);
+    font: 700 15px/1 var(--naglowek);
+  }
+  .krok img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; border: 1px solid var(--linia2); transition: transform .35s; }
+  .krok:hover img { transform: translateY(-4px); }
+  .krok h3 { display: flex; align-items: center; gap: 9px; margin: 18px 0 6px; font: 700 19px/1.2 var(--naglowek); }
+  .krok h3 .ik { color: var(--akcent); }
+  .krok p { margin: 0; color: var(--tekst2); font-size: 15px; }
+
+  /* funkcje */
+  .bento { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .kafel {
+    position: relative; overflow: hidden;
+    padding: 26px; border-radius: 22px;
+    background: var(--karta); border: 1px solid var(--linia);
+    transition: border-color .3s, transform .3s;
+  }
+  .kafel:hover { border-color: var(--linia2); transform: translateY(-3px); }
+  .kafel h3 { margin: 0 0 8px; font: 700 20px/1.2 var(--naglowek); letter-spacing: -.01em; }
+  .kafel p { margin: 0; color: var(--tekst2); font-size: 15px; }
+  .kafel .ikona {
+    display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: 18px; border-radius: 13px;
+    background: var(--akcent-tlo); color: var(--akcent-jasny);
+  }
+  .kafel .ikona svg { width: 22px; height: 22px; }
+  .kafel .ikona.cz { background: var(--czerwony-tlo); color: var(--czerwony); }
+  .kafel .ikona.zi { background: var(--zielony-tlo); color: var(--zielony); }
+  .kafel .ikona.zo { background: var(--zolty-tlo); color: var(--zolty); }
+  .kafel .ikona.fi { background: var(--fiolet-tlo); color: var(--fiolet); }
+  .w2 { grid-column: span 2; }
+  .w4 { grid-column: 1 / -1; }
+  .h2 { grid-row: span 2; }
+
+  .marquee { margin: 26px -26px -6px; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+  .marquee .tor { display: flex; gap: 10px; width: max-content; animation: jedz 48s linear infinite; }
+  .marquee .tor + .tor { margin-top: 10px; animation-direction: reverse; animation-duration: 56s; }
+  .marquee:hover .tor { animation-play-state: paused; }
+  @keyframes jedz { to { transform: translateX(-50%); } }
+  .sk { display: inline-flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 12px; background: var(--karta2); border: 1px solid var(--linia); white-space: nowrap; font-size: 14px; font-weight: 700; }
+  .sk small { color: var(--tekst3); font-weight: 700; font-size: 12px; letter-spacing: .04em; }
+  .sk em { font-style: normal; color: var(--akcent-jasny); font-size: 12px; }
+
+  .pasek-wyb { margin-top: 26px; }
+  .pasek-wyb .belka { position: relative; height: 14px; border-radius: 99px; background: #1b2540; overflow: hidden; }
+  .pasek-wyb .zolte { position: absolute; left: 52%; width: 30%; top: 0; bottom: 0; background: var(--zolty); opacity: .75; }
+  .pasek-wyb .zielone { position: absolute; left: 60%; width: 13%; top: 0; bottom: 0; background: var(--zielony); }
+  .pasek-wyb .znacznik { position: absolute; top: -5px; width: 4px; height: 24px; margin-left: -2px; border-radius: 2px; background: #fff; box-shadow: 0 0 10px rgba(255, 255, 255, .6); animation: znacznik 3.4s cubic-bezier(.45, 0, .2, 1) infinite; }
+  .pasek-wyb .wrap-b { position: relative; }
+  @keyframes znacznik { 0% { left: 2%; } 55%, 100% { left: 63%; } }
+  .pasek-wyb p { margin-top: 12px; font-size: 14px; font-weight: 700; color: var(--zielony); }
+  .pasek-wyb p span { display: block; color: var(--tekst2); font-weight: 600; }
+
+  .noty { display: flex; gap: 8px; margin-top: 24px; }
+  .noty span {
+    flex: 1; padding: 10px 0; border-radius: 10px; text-align: center;
+    background: var(--akcent-tlo); color: var(--akcent-jasny);
+    font: 700 15px/1 var(--naglowek);
+    opacity: 0; transform: translateY(8px);
+  }
+  .noty span.skr { background: rgba(255, 255, 255, .05); color: var(--tekst3); text-decoration: line-through; }
+  .pokazany .noty span { animation: nota .4s forwards; }
+  .pokazany .noty span:nth-child(2) { animation-delay: .25s; }
+  .pokazany .noty span:nth-child(3) { animation-delay: .5s; }
+  .pokazany .noty span:nth-child(4) { animation-delay: .75s; }
+  .pokazany .noty span:nth-child(5) { animation-delay: 1s; }
+  @keyframes nota { to { opacity: 1; transform: none; } }
+  .razem { margin-top: 14px; display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; color: var(--tekst2); }
+  .razem b { color: var(--tekst); font-family: var(--naglowek); }
+
+  .wiatr { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+  .wiatr span { display: inline-flex; align-items: center; gap: 8px; padding: 9px 13px; border-radius: 12px; font-weight: 800; font-size: 14px; }
+  .wiatr .pod { background: var(--zielony-tlo); color: var(--zielony); }
+  .wiatr .plecy { background: var(--czerwony-tlo); color: var(--czerwony); }
+  .wiatr .bel { background: rgba(255, 255, 255, .06); color: var(--tekst); }
+  .wiatr svg { width: 16px; height: 16px; }
+
+  .tryby { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 22px; }
+  .tryby div { padding: 14px 16px; border-radius: 14px; background: var(--karta2); border: 1px solid var(--linia); }
+  .tryby b { display: block; font: 700 15px/1.2 var(--naglowek); margin-bottom: 4px; }
+  .tryby span { color: var(--tekst2); font-size: 13.5px; }
+  .w4 .tryby { grid-template-columns: repeat(4, 1fr); }
+  .tryby .caly { grid-column: span 2; }
+  .kafel-kraje { display: grid; grid-template-columns: 1fr 200px; gap: 24px; align-items: center; }
+  .kafel-kraje img { width: 100%; height: auto; border-radius: 14px; }
+
+  .kafel-foto { padding: 0; display: flex; flex-direction: column; }
+  .kafel-foto img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; flex: none; }
+  .kafel-foto .tresc { padding: 24px 26px 26px; }
+
+  .chipy { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .chipy span { padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 800; background: rgba(255, 255, 255, .06); color: var(--tekst); }
+  .chipy .c1 { background: var(--zielony-tlo); color: var(--zielony); }
+  .chipy .c2 { background: var(--zolty-tlo); color: var(--zolty); }
+  .chipy .c3 { background: var(--czerwony-tlo); color: var(--czerwony); }
+  .pory { display: flex; gap: 8px; margin-top: 18px; }
+  .pory figure { flex: 1; min-width: 0; margin: 0; }
+  .pory img { width: 100%; aspect-ratio: 16 / 11; object-fit: cover; border-radius: 10px; }
+  .pory figcaption { margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--tekst2); text-align: center; }
+  .kafel-swiatlo { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; }
+  .kafel-swiatlo img { width: 100%; border-radius: 14px; }
+
+  .eq { display: flex; align-items: flex-end; gap: 5px; width: 220px; max-width: 100%; height: 56px; }
+  .eq i { flex: 1; max-width: 10px; border-radius: 3px; background: var(--fiolet); opacity: .85; animation: eq 1.2s ease-in-out infinite; }
+  .eq i:nth-child(odd) { background: var(--akcent); }
+  @keyframes eq { 0%, 100% { height: 20%; } 50% { height: 100%; } }
+  .kafel-poz { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
+  .sam { display: flex; gap: 14px; align-items: flex-start; padding: 18px 18px 14px; border-radius: 16px; background: #141d33; border: 1px solid var(--linia2); }
+  .sam i { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: #2fbf6e; color: #fff; font: 800 19px/1 var(--naglowek); font-style: normal; }
+  .sam b { display: block; margin-bottom: 6px; color: var(--akcent-jasny); font: 700 18px/1.2 var(--naglowek); }
+  .sam span { display: block; font-size: 13.5px; font-weight: 700; color: var(--tekst); }
+  .sam span + span { color: var(--tekst2); font-weight: 600; }
+  .sam small { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding: 3px 10px 3px 3px; border-radius: 99px; background: rgba(0, 0, 0, .3); font-size: 12.5px; font-weight: 700; color: var(--tekst); }
+  .sam small i { width: 18px; height: 18px; font-size: 11px; }
+
+  /* sterowanie */
+  .ster-uklad { display: grid; grid-template-columns: 330px 1fr; gap: 56px; align-items: start; }
+  .ster-konsola { position: sticky; top: 92px; padding-top: 13px; }
+  .ster-konsola p { margin: 22px 0 0; text-align: center; color: var(--tekst3); font-size: 13px; font-weight: 600; }
+  .ster-grupa { margin: 0 0 8px; display: flex; align-items: center; gap: 10px; font: 700 18px/1.2 var(--naglowek); }
+  .ster-grupa .ik { color: var(--akcent); width: 20px; height: 20px; }
+  .ster-grupa:not(:first-child) { margin-top: 34px; }
+  .ster { margin: 0; padding: 0; list-style: none; }
+  .ster li { display: flex; align-items: center; gap: 16px; padding: 13px 12px; margin-inline: -12px; border-bottom: 1px solid var(--linia); border-radius: 10px; transition: background .15s; }
+  .ster li.akt { background: var(--akcent-tlo); }
+  .klaw { display: flex; gap: 6px; flex: none; width: 158px; flex-wrap: wrap; align-items: center; }
+  .klaw kbd {
+    display: inline-grid; place-items: center; min-width: 36px; height: 36px; padding: 0 9px;
+    border-radius: 10px; background: var(--karta2); border: 1px solid var(--linia2);
+    font: 700 12.5px/1 var(--naglowek); color: var(--tekst);
+  }
+  .klaw kbd.ok { border-radius: 50%; width: 36px; padding: 0; background: #17181c; font-size: 15px; }
+  .klaw kbd.a { color: #ff4a4f; }
+  .klaw kbd.b { color: #ffdc20; }
+  .klaw kbd.x { color: #4d9bff; }
+  .klaw kbd.y { color: #5cdc6b; }
+  .klaw .plus { align-self: center; color: var(--tekst3); font-weight: 800; }
+  .ster b { display: block; font-weight: 700; }
+  .ster span { color: var(--tekst2); font-size: 14px; }
+  .uwaga { display: flex; gap: 10px; margin: 26px 0 0; color: var(--tekst2); font-size: 15px; }
+  .uwaga .ik { color: var(--akcent); margin-top: 3px; }
+  .uwaga b { color: var(--tekst); }
+
+  /* pobierz */
+  .pobierz {
+    position: relative; overflow: hidden;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 50px;
+    padding: 54px; border-radius: 30px;
+    background:
+      radial-gradient(600px 300px at 0% 0%, rgba(72, 206, 255, .18), transparent 70%),
+      var(--karta);
+    border: 1px solid var(--linia2);
+  }
+  .pobierz h2 { margin-bottom: 12px; }
+  .wersja { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 30px; }
+  .wersja span { padding: 7px 12px; border-radius: 999px; background: rgba(255, 255, 255, .06); font-size: 13px; font-weight: 700; color: var(--tekst2); }
+  .wersja span:first-child { background: var(--akcent-tlo); color: var(--akcent-jasny); }
+  .pobierz .btn-glowny { padding: 18px 30px; font-size: 17px; }
+  .dziala { margin-top: 18px; color: var(--tekst3); font-size: 14px; font-weight: 600; }
+  .jak { margin: 0; padding: 0; list-style: none; counter-reset: jak; }
+  .jak-tytul { margin: 0 0 22px; font: 700 18px/1.2 var(--naglowek); }
+  .jak li { counter-increment: jak; position: relative; padding: 0 0 22px 56px; }
+  .jak li::before {
+    content: counter(jak); position: absolute; left: 0; top: 0;
+    display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px;
+    background: var(--akcent-tlo); color: var(--akcent-jasny); font: 700 15px/1 var(--naglowek);
+  }
+  .jak li:not(:last-child)::after { content: ""; position: absolute; left: 18px; top: 44px; bottom: 6px; width: 2px; background: var(--linia2); }
+  .jak b { display: block; margin-bottom: 2px; }
+  .jak span { color: var(--tekst2); font-size: 15px; }
+  .jak code { padding: 2px 7px; border-radius: 6px; background: rgba(255, 255, 255, .07); font: 600 13.5px/1.4 ui-monospace, Consolas, monospace; color: var(--tekst); }
+
+  footer { padding: 40px 0 50px; border-top: 1px solid var(--linia); color: var(--tekst3); font-size: 14px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 14px 30px; align-items: center; justify-content: space-between; }
+  footer .logo { color: var(--tekst); font-size: 15px; }
+  footer a { text-decoration: none; color: var(--tekst2); font-weight: 600; }
+  footer a:hover { color: var(--tekst); }
+
+  /* wejscie przy przewijaniu */
+  .pojaw { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s cubic-bezier(.2, .8, .2, 1); }
+  .pojaw.pokazany { opacity: 1; transform: none; }
+
+  @media (max-width: 1080px) {
+    .nav .wrap { gap: 20px; }
+    .nav ul { gap: 20px; }
+    .nav .logo-nap { height: 34px; width: 218px; }
+    .bento { grid-template-columns: repeat(2, 1fr); }
+    .h2 { grid-row: auto; }
+    .w4 .tryby { grid-template-columns: 1fr 1fr; }
+    .tryby .caly { grid-column: 1 / -1; }
+    .kroki { grid-template-columns: repeat(5, minmax(250px, 1fr)); overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; padding-bottom: 14px; margin-inline: -16px; padding-inline: 16px; scrollbar-width: thin; }
+    .krok { scroll-snap-align: start; }
+    .kroki::before { left: 36px; right: auto; width: 1200px; }
+  }
+  @media (max-width: 900px) {
+    .nav ul { display: none; }
+    .nav .jezyk { margin-left: auto; }
+    .nav .wrap { height: 76px; }
+    .hero { padding-top: 104px; text-align: center; }
+    .hero .wrap { grid-template-columns: 1fr; gap: 54px; }
+    .opis { margin-inline: auto; }
+    .przyciski, .meta { justify-content: center; }
+    .liczby ul { grid-template-columns: repeat(3, 1fr); }
+    .liczby li:nth-child(4) { border-left: 0; }
+    .liczby li:nth-child(n + 4) { border-top: 1px solid var(--linia); }
+    .ster-uklad { grid-template-columns: 1fr; gap: 36px; }
+    .ster-konsola { position: static; }
+    .kafel-swiatlo { grid-template-columns: 1fr; }
+    .pobierz { grid-template-columns: 1fr; padding: 34px 24px; gap: 34px; }
+    section.blok { padding: 80px 0; }
+  }
+  @media (max-width: 600px) {
+    .bento { grid-template-columns: 1fr; }
+    .w2 { grid-column: auto; }
+    .kafel-poz { grid-template-columns: 1fr; }
+    .kafel-kraje { grid-template-columns: 1fr; }
+    .kafel-kraje img { max-width: 240px; }
+    .liczby ul { grid-template-columns: repeat(2, 1fr); }
+    .liczby li { border-left: 0 !important; border-top: 1px solid var(--linia); }
+    .liczby li:nth-child(even) { border-left: 1px solid var(--linia) !important; }
+    .liczby li:nth-child(-n + 2) { border-top: 0; }
+    .liczby li:last-child { grid-column: span 2; border-left: 0 !important; }
+    .w4 .tryby { grid-template-columns: 1fr; }
+    .kroki { grid-template-columns: repeat(5, 74vw); }
+    .klaw { width: 118px; gap: 4px; }
+    .klaw kbd { padding: 0 7px; }
+    .ster li { gap: 12px; }
+    .nav .wrap { gap: 12px; }
+    .nav .logo-nap { height: 26px; width: 167px; }
+    .nav .btn { padding: 11px; }
+    .nav .btn span { display: none; }
+    .jezyk a { padding: 7px 8px; }
+    .przyciski .btn { flex: 1 1 100%; }
+  }
+  @media (max-width: 359px) {
+    .nav .btn { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+    .pojaw { opacity: 1; transform: none; }
+    .noty span { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+<svg class="sprite" aria-hidden="true"><defs>
+  <g id="logo-znak" stroke="none"><polygon points="0,64 34,30 26,50" fill="#48ceff"/><polygon points="8,66 46,40 36,58" fill="#48ceff" fill-opacity=".7"/></g>
+  <path id="logo-tekst" fill="#fff" d="M72.69 32.34Q68.91 32.34 66.83 35.13Q64.74 37.92 64.74 42.99Q64.74 48.04 66.83 50.84Q68.91 53.63 72.69 53.63Q76.49 53.63 78.58 50.84Q80.66 48.04 80.66 42.99Q80.66 37.92 78.58 35.13Q76.49 32.34 72.69 32.34ZM72.69 26.34Q80.43 26.34 84.81 30.77Q89.19 35.2 89.19 42.99Q89.19 50.77 84.81 55.2Q80.43 59.62 72.69 59.62Q64.98 59.62 60.58 55.2Q56.19 50.77 56.19 42.99Q56.19 35.2 60.58 30.77Q64.98 26.34 72.69 26.34ZM107.2 41.15Q109.79 41.15 110.92 40.18Q112.05 39.21 112.05 37Q112.05 34.81 110.92 33.86Q109.79 32.92 107.2 32.92L103.71 32.92L103.71 41.15L107.2 41.15ZM103.71 46.86L103.71 59L95.44 59L95.44 26.92L108.08 26.92Q114.41 26.92 117.37 29.05Q120.32 31.18 120.32 35.78Q120.32 38.96 118.79 41Q117.25 43.04 114.16 44Q115.85 44.39 117.2 45.75Q118.54 47.12 119.91 49.89L124.4 59L115.6 59L111.69 51.03Q110.5 48.62 109.29 47.74Q108.08 46.86 106.06 46.86L103.71 46.86ZM129.32 26.92L137.6 26.92L137.6 52.75L152.12 52.75L152.12 59L129.32 59L129.32 26.92ZM157.36 26.92L165.63 26.92L165.63 59L157.36 59L157.36 26.92ZM189.05 26.92L197.32 26.92L197.32 52.75L211.85 52.75L211.85 59L189.05 59L189.05 26.92ZM231.74 32.34Q227.96 32.34 225.88 35.13Q223.79 37.92 223.79 42.99Q223.79 48.04 225.88 50.84Q227.96 53.63 231.74 53.63Q235.54 53.63 237.63 50.84Q239.71 48.04 239.71 42.99Q239.71 37.92 237.63 35.13Q235.54 32.34 231.74 32.34ZM231.74 26.34Q239.47 26.34 243.86 30.77Q248.24 35.2 248.24 42.99Q248.24 50.77 243.86 55.2Q239.47 59.62 231.74 59.62Q224.03 59.62 219.63 55.2Q215.24 50.77 215.24 42.99Q215.24 35.2 219.63 30.77Q224.03 26.34 231.74 26.34ZM250.67 26.92L280.23 26.92L280.23 33.18L269.6 33.18L269.6 59L261.32 59L261.32 33.18L250.67 33.18L250.67 26.92Z"/>
+  <path id="logo-podpis" fill="#d2e1fa" d="M66.18 71.52L66.18 73.65Q65.28 73.27 64.45 73.09Q63.61 72.9 62.87 72.9Q62.07 72.9 61.68 73.1Q61.3 73.3 61.3 73.71Q61.3 74.05 61.59 74.23Q61.88 74.41 62.64 74.49L63.13 74.56Q65.28 74.84 66.02 75.46Q66.77 76.09 66.77 77.42Q66.77 78.82 65.73 79.52Q64.7 80.23 62.66 80.23Q61.79 80.23 60.86 80.09Q59.94 79.95 58.96 79.68L58.96 77.55Q59.8 77.96 60.68 78.16Q61.55 78.37 62.46 78.37Q63.28 78.37 63.7 78.14Q64.11 77.91 64.11 77.47Q64.11 77.09 63.82 76.91Q63.54 76.73 62.69 76.62L62.2 76.56Q60.33 76.33 59.58 75.7Q58.83 75.06 58.83 73.77Q58.83 72.38 59.78 71.71Q60.73 71.04 62.7 71.04Q63.48 71.04 64.33 71.16Q65.18 71.27 66.18 71.52ZM68.87 67.84L71.66 67.84L71.66 74.46L74.88 71.25L78.13 71.25L73.86 75.27L78.47 80L75.08 80L71.66 76.35L71.66 80L68.87 80L68.87 67.84ZM83.67 73.04Q82.74 73.04 82.25 73.71Q81.77 74.38 81.77 75.63Q81.77 76.89 82.25 77.56Q82.74 78.23 83.67 78.23Q84.59 78.23 85.07 77.56Q85.55 76.89 85.55 75.63Q85.55 74.38 85.07 73.71Q84.59 73.04 83.67 73.04ZM83.67 71.04Q85.93 71.04 87.2 72.26Q88.47 73.48 88.47 75.63Q88.47 77.79 87.2 79.01Q85.93 80.23 83.67 80.23Q81.41 80.23 80.13 79.01Q78.85 77.79 78.85 75.63Q78.85 73.48 80.13 72.26Q81.41 71.04 83.67 71.04ZM90.5 67.84L93.3 67.84L93.3 74.46L96.52 71.25L99.77 71.25L95.49 75.27L100.1 80L96.71 80L93.3 76.35L93.3 80L90.5 80L90.5 67.84ZM101.14 71.25L103.94 71.25L103.94 80L101.14 80L101.14 71.25ZM101.14 67.84L103.94 67.84L103.94 70.12L101.14 70.12L101.14 67.84ZM120.99 74.67L120.99 80L118.18 80L118.18 79.13L118.18 75.92Q118.18 74.79 118.13 74.36Q118.08 73.93 117.95 73.73Q117.79 73.45 117.51 73.3Q117.23 73.15 116.87 73.15Q115.99 73.15 115.49 73.82Q114.99 74.5 114.99 75.7L114.99 80L112.2 80L112.2 71.25L114.99 71.25L114.99 72.53Q115.62 71.77 116.34 71.4Q117.05 71.04 117.91 71.04Q119.42 71.04 120.21 71.97Q120.99 72.9 120.99 74.67ZM127.51 76.06Q126.63 76.06 126.19 76.36Q125.75 76.66 125.75 77.23Q125.75 77.77 126.11 78.07Q126.46 78.37 127.09 78.37Q127.88 78.37 128.42 77.8Q128.96 77.23 128.96 76.38L128.96 76.06L127.51 76.06ZM131.78 75.01L131.78 80L128.96 80L128.96 78.7Q128.4 79.5 127.7 79.86Q126.99 80.23 125.98 80.23Q124.62 80.23 123.78 79.43Q122.93 78.64 122.93 77.38Q122.93 75.84 123.99 75.12Q125.05 74.4 127.31 74.4L128.96 74.4L128.96 74.18Q128.96 73.52 128.44 73.21Q127.91 72.9 126.8 72.9Q125.91 72.9 125.13 73.08Q124.36 73.26 123.7 73.62L123.7 71.48Q124.59 71.27 125.5 71.15Q126.41 71.04 127.31 71.04Q129.68 71.04 130.73 71.97Q131.78 72.91 131.78 75.01ZM140.88 73.63Q140.52 73.46 140.15 73.38Q139.79 73.3 139.42 73.3Q138.34 73.3 137.76 73.99Q137.18 74.68 137.18 75.97L137.18 80L134.38 80L134.38 71.25L137.18 71.25L137.18 72.69Q137.72 71.83 138.42 71.43Q139.12 71.04 140.09 71.04Q140.23 71.04 140.4 71.05Q140.56 71.06 140.88 71.1L140.88 73.63ZM149.34 71.52L149.34 73.8Q148.77 73.41 148.2 73.23Q147.62 73.04 147.01 73.04Q145.84 73.04 145.18 73.72Q144.53 74.41 144.53 75.63Q144.53 76.86 145.18 77.54Q145.84 78.23 147.01 78.23Q147.66 78.23 148.25 78.03Q148.84 77.84 149.34 77.45L149.34 79.74Q148.69 79.98 148.01 80.11Q147.34 80.23 146.66 80.23Q144.29 80.23 142.95 79.01Q141.62 77.8 141.62 75.63Q141.62 73.47 142.95 72.25Q144.29 71.04 146.66 71.04Q147.34 71.04 148.01 71.16Q148.68 71.28 149.34 71.52ZM151.76 71.25L154.55 71.25L154.55 80L151.76 80L151.76 71.25ZM151.76 67.84L154.55 67.84L154.55 70.12L151.76 70.12L151.76 67.84ZM161.16 76.06Q160.29 76.06 159.85 76.36Q159.41 76.66 159.41 77.23Q159.41 77.77 159.76 78.07Q160.12 78.37 160.75 78.37Q161.54 78.37 162.08 77.8Q162.62 77.23 162.62 76.38L162.62 76.06L161.16 76.06ZM165.44 75.01L165.44 80L162.62 80L162.62 78.7Q162.05 79.5 161.35 79.86Q160.65 80.23 159.64 80.23Q158.28 80.23 157.43 79.43Q156.59 78.64 156.59 77.38Q156.59 75.84 157.64 75.12Q158.7 74.4 160.97 74.4L162.62 74.4L162.62 74.18Q162.62 73.52 162.09 73.21Q161.57 72.9 160.46 72.9Q159.56 72.9 158.79 73.08Q158.02 73.26 157.35 73.62L157.35 71.48Q158.25 71.27 159.16 71.15Q160.06 71.04 160.97 71.04Q163.34 71.04 164.39 71.97Q165.44 72.91 165.44 75.01ZM174.54 73.63Q174.17 73.46 173.81 73.38Q173.45 73.3 173.08 73.3Q172 73.3 171.42 73.99Q170.84 74.68 170.84 75.97L170.84 80L168.04 80L168.04 71.25L170.84 71.25L170.84 72.69Q171.38 71.83 172.07 71.43Q172.77 71.04 173.75 71.04Q173.89 71.04 174.05 71.05Q174.22 71.06 174.53 71.1L174.54 73.63ZM182.77 71.52L182.77 73.65Q181.87 73.27 181.03 73.09Q180.2 72.9 179.45 72.9Q178.66 72.9 178.27 73.1Q177.88 73.3 177.88 73.71Q177.88 74.05 178.18 74.23Q178.47 74.41 179.23 74.49L179.72 74.56Q181.87 74.84 182.61 75.46Q183.35 76.09 183.35 77.42Q183.35 78.82 182.32 79.52Q181.29 80.23 179.24 80.23Q178.38 80.23 177.45 80.09Q176.52 79.95 175.55 79.68L175.55 77.55Q176.38 77.96 177.26 78.16Q178.14 78.37 179.05 78.37Q179.87 78.37 180.28 78.14Q180.7 77.91 180.7 77.47Q180.7 77.09 180.41 76.91Q180.12 76.73 179.27 76.62L178.78 76.56Q176.91 76.33 176.16 75.7Q175.41 75.06 175.41 73.77Q175.41 72.38 176.37 71.71Q177.32 71.04 179.29 71.04Q180.06 71.04 180.91 71.16Q181.77 71.27 182.77 71.52ZM185.45 67.84L188.25 67.84L188.25 74.46L191.47 71.25L194.72 71.25L190.45 75.27L195.05 80L191.66 80L188.25 76.35L188.25 80L185.45 80L185.45 67.84ZM196.09 71.25L198.89 71.25L198.89 80L196.09 80L196.09 71.25ZM196.09 67.84L198.89 67.84L198.89 70.12L196.09 70.12L196.09 67.84ZM210.31 75.6L210.31 76.4L203.77 76.4Q203.88 77.38 204.48 77.88Q205.09 78.37 206.19 78.37Q207.07 78.37 208 78.11Q208.92 77.84 209.9 77.31L209.9 79.47Q208.91 79.84 207.91 80.04Q206.92 80.23 205.93 80.23Q203.55 80.23 202.24 79.02Q200.92 77.81 200.92 75.63Q200.92 73.49 202.21 72.27Q203.51 71.04 205.77 71.04Q207.84 71.04 209.07 72.28Q210.31 73.52 210.31 75.6ZM207.44 74.67Q207.44 73.88 206.97 73.39Q206.51 72.9 205.76 72.9Q204.95 72.9 204.44 73.36Q203.93 73.81 203.8 74.67L207.44 74.67Z"/>
+  <symbol id="i-skok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5c4 1 7 4 9 8l9 6"/><path d="M3 21h18"/></symbol>
+  <symbol id="i-gwiazdki" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16z"/></symbol>
+  <symbol id="i-pad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="11" rx="5"/><path d="M7.5 10.5v4M5.5 12.5h4"/><path d="M15.5 11.5h.01M18 13.5h.01"/></symbol>
+  <symbol id="i-pobierz" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></symbol>
+  <symbol id="i-flaga" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V4m0 0h12l-2 4 2 4H4"/></symbol>
+  <symbol id="i-ludzie" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c.8-3.5 3.6-5.5 7-5.5s6.2 2 7 5.5"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17 14.5c2.6.2 4.3 2 5 4.5"/></symbol>
+  <symbol id="i-globus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></symbol>
+  <symbol id="i-blysk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></symbol>
+  <symbol id="i-swiatlo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2.5" width="8" height="19" rx="3"/><path d="M12 7h.01M12 12h.01M12 17h.01"/></symbol>
+  <symbol id="i-wybicie" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5m0 0l-6 6m6-6l6 6"/></symbol>
+  <symbol id="i-wiatr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h11a3 3 0 10-3-3M3 16h15a3 3 0 11-3 3M3 12h7"/></symbol>
+  <symbol id="i-ladowanie" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5l6 6 6-6M6 12l6 6 6-6"/></symbol>
+  <symbol id="i-puchar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4zM17 6h3v2a3 3 0 01-3 3M7 6H4v2a3 3 0 003 3"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"/></symbol>
+  <symbol id="i-powtorka" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 109-9 9.7 9.7 0 00-6.7 2.8L3 8"/><path d="M3 3v5h5"/></symbol>
+  <symbol id="i-lampa" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 00-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0012 3z"/></symbol>
+  <symbol id="i-medal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="15" r="6"/><path d="M8.5 10L6 3h4l2 5 2-5h4l-2.5 7"/></symbol>
+  <symbol id="i-karta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6V3z"/><path d="M10 7v3M13 7v3"/></symbol>
+  <symbol id="i-uwaga" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></symbol>
+  <symbol id="i-krzyzak" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></symbol>
+</defs></svg>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#gora" aria-label="Orli Lot – na górę"><svg class="logo-nap" viewBox="0 24 282 44" aria-hidden="true"><use href="#logo-znak"/><use href="#logo-tekst"/></svg></a>
+    <ul>
+      <li><a href="#jak"><svg class="ik" aria-hidden="true"><use href="#i-skok"/></svg>Jak się skacze</a></li>
+      <li><a href="#funkcje"><svg class="ik" aria-hidden="true"><use href="#i-gwiazdki"/></svg>Funkcje</a></li>
+      <li><a href="#sterowanie"><svg class="ik" aria-hidden="true"><use href="#i-pad"/></svg>Sterowanie</a></li>
+    </ul>
+    <div class="jezyk" role="group" aria-label="Język strony"><a href="./" hreflang="pl" lang="pl" aria-current="page">PL</a><a href="en.html" hreflang="en" lang="en">EN</a></div>
+    <a class="btn btn-glowny" href="#pobierz" aria-label="Pobierz"><svg class="ik" aria-hidden="true"><use href="#i-pobierz"/></svg><span>Pobierz</span></a>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="gora">
+  <canvas id="snieg" aria-hidden="true"></canvas>
+  <svg class="skocznia" viewBox="0 0 1440 230" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="gStok" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#1a2747"/>
+        <stop offset="1" stop-color="#0d1730"/>
+      </linearGradient>
+      <linearGradient id="gLot" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#48ceff" stop-opacity=".9"/>
+        <stop offset="1" stop-color="#48ceff" stop-opacity=".15"/>
+      </linearGradient>
+    </defs>
+    <path d="M-20 4 C 120 38, 270 96, 410 124 L 470 132 L 470 230 L -20 230 Z" fill="#0e1830" opacity=".9"/>
+    <path d="M-20 4 C 120 38, 270 96, 410 124 L 470 132" fill="none" stroke="#cfe6ff" stroke-opacity=".55" stroke-width="3"/>
+    <path d="M470 132 L 470 146" stroke="#cfe6ff" stroke-opacity=".4" stroke-width="2"/>
+    <path d="M470 146 Q 520 148 580 160 L 870 212 Q 950 225 1070 226 L 1460 226 L 1460 230 L 470 230 Z" fill="url(#gStok)"/>
+    <path d="M470 146 Q 520 148 580 160 L 870 212 Q 950 225 1070 226 L 1460 226" fill="none" stroke="#e6f2ff" stroke-opacity=".7" stroke-width="2.5"/>
+    <g stroke-width="3" stroke-linecap="round">
+      <path d="M760 194 l 6 -20" stroke="#48ceff" stroke-opacity=".7"/>
+      <path d="M830 206 l 6 -20" stroke="#ff5a6a"/>
+      <path d="M890 215 l 6 -20" stroke="#4fe3a2" stroke-opacity=".8"/>
+    </g>
+    <text x="832" y="180" fill="#ff5a6a" font-family="Unbounded, sans-serif" font-size="13" font-weight="700">K</text>
+    <text x="892" y="189" fill="#4fe3a2" font-family="Unbounded, sans-serif" font-size="11" font-weight="700" opacity=".9">HS</text>
+    <path id="tor" d="M472 128 C 590 104, 730 140, 845 204" fill="none" stroke="url(#gLot)" stroke-width="2" stroke-dasharray="2 9" stroke-linecap="round"/>
+    <g id="skoczek">
+      <g transform="rotate(-8)">
+        <path d="M-22 1 L 16 -9" stroke="#e8f1ff" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M-22 6 L 16 4" stroke="#e8f1ff" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M-9 -1 L 9 -7" stroke="#ff4d5e" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="12" cy="-9" r="3.4" fill="#fff"/>
+      </g>
+      <animateMotion dur="4.2s" repeatCount="indefinite" rotate="auto" keyPoints="0;1;1" keyTimes="0;.62;1" calcMode="spline" keySplines=".3 0 .7 1;0 0 1 1">
+        <mpath href="#tor"/>
+      </animateMotion>
+    </g>
+  </svg>
+
+  <div class="wrap">
+    <div>
+      <span class="chip"><span class="kropka"></span>Nowa wersja 1.3.5</span>
+      <h1>Skoki narciarskie w 3D na konsolkę R36S</h1>
+      <p class="opis">27 prawdziwych skoczni – od Karpacza po Planicę. Wybicie co do setnej sekundy, wiatr i pogoda, telemark, noty sędziów jak w telewizji i codzienny konkurs online.</p>
+      <div class="przyciski">
+        <a class="btn btn-glowny" href="https://github.com/sebastian-nni/orlilot/releases/download/v1.3.5/orli-lot-1.3.5-r36s.zip" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg>
+          Pobierz grę <small>zip · 294 KB</small>
+        </a>
+        <a class="btn btn-drugi" href="#funkcje">Zobacz, co potrafi</a>
+      </div>
+      <ul class="meta">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Za darmo</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Płynnie na R36S</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>Po polsku i w 3 innych językach</li>
+      </ul>
+    </div>
+
+    <div class="scena">
+      <div class="konsola" id="konsola">
+        <div class="ramka">
+          <div class="ekran" id="ekran" aria-live="polite"></div>
+        </div>
+        <div class="krzyzak">
+          <div class="srodek"></div>
+          <button class="kl g" type="button" data-k="wstecz" aria-label="Poprzedni ekran"></button>
+          <button class="kl l" type="button" data-k="wstecz" aria-label="Poprzedni ekran"></button>
+          <button class="kl p" type="button" data-k="dalej" aria-label="Następny ekran"></button>
+          <button class="kl d" type="button" data-k="dalej" aria-label="Następny ekran"></button>
+        </div>
+        <div class="glosnik" aria-hidden="true">
+          <div><i></i><i class="kr"></i><i></i></div>
+          <div><i class="kr"></i><i></i><i class="kr"></i></div>
+          <div><i></i><i class="kr"></i><i></i></div>
+        </div>
+        <div class="abxy">
+          <button class="kl x" type="button" data-k="dalej" aria-label="X – następny ekran">X</button>
+          <button class="kl y" type="button" data-k="wstecz" aria-label="Y – poprzedni ekran">Y</button>
+          <button class="kl a" type="button" data-k="dalej" aria-label="A – następny ekran">A</button>
+          <button class="kl b" type="button" data-k="wstecz" aria-label="B – poprzedni ekran">B</button>
+        </div>
+        <span class="napis n-fn">FN</span>
+        <button class="kl okragly fn" type="button" data-k="dalej" aria-label="FN – następny ekran"></button>
+        <button class="kl okragly se" type="button" data-k="wstecz" aria-label="Select – poprzedni ekran"></button>
+        <i class="dziurka"></i>
+        <button class="kl okragly st" type="button" data-k="dalej" aria-label="Start – następny ekran"></button>
+        <span class="napis n-se">SELECT</span>
+        <span class="napis n-st">START</span>
+        <div class="galka l"></div>
+        <div class="galka p"></div>
+      </div>
+      <div class="podpis">
+        <b id="ekranTytul">Menu</b>
+        <span id="ekranOpis"></span>
+        <div class="kropki" id="kropki"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="liczby">
+  <ul class="wrap">
+    <li><svg class="ik" aria-hidden="true"><use href="#i-skok"/></svg><b>27</b><span>prawdziwych skoczni</span></li>
+    <li><svg class="ik" aria-hidden="true"><use href="#i-flaga"/></svg><b>7</b><span>trybów gry</span></li>
+    <li><svg class="ik" aria-hidden="true"><use href="#i-ludzie"/></svg><b>4</b><span>graczy na zmianę</span></li>
+    <li><svg class="ik" aria-hidden="true"><use href="#i-globus"/></svg><b>4</b><span>języki</span></li>
+    <li><svg class="ik" aria-hidden="true"><use href="#i-blysk"/></svg><b><em>do</em> 60</b><span>klatek w locie na R36S</span></li>
+  </ul>
+</div>
+
+<section class="blok" id="jak">
+  <div class="wrap">
+    <div class="pojaw">
+      <span class="etykieta">Jak się skacze</span>
+      <h2>Jeden skok, pięć chwil</h2>
+      <p class="wstep">Proste na start, trudne do opanowania. Każdy skok to inna odległość – liczy się refleks i wyczucie.</p>
+    </div>
+    <ol class="kroki">
+      <li class="krok pojaw">
+        <div class="nr">1</div>
+        <img src="img/belka-planica.jpg" alt="Widok zza pleców skoczka na belce w Planicy wieczorem, obok sygnalizator z zielonym światłem" loading="lazy" width="640" height="480">
+        <h3><svg class="ik" aria-hidden="true"><use href="#i-swiatlo"/></svg>Zielone światło</h3>
+        <p>Siadasz na belce. Czerwone, żółte, zielone – zegar odlicza 10 sekund. Wciskasz A i jazda.</p>
+      </li>
+      <li class="krok pojaw">
+        <div class="nr">2</div>
+        <img src="img/rozbieg-wisla.jpg" alt="Rozbieg w Wiśle wieczorem, pasek wybicia i reflektory" loading="lazy" width="640" height="480">
+        <h3><svg class="ik" aria-hidden="true"><use href="#i-wybicie"/></svg>Wybicie</h3>
+        <p>A tuż przed progiem. Gra liczy czas i powie, czy było za wcześnie. Bez wybicia nie polecisz.</p>
+      </li>
+      <li class="krok pojaw">
+        <div class="nr">3</div>
+        <img src="img/lot-zakopane.jpg" alt="Skoczek w locie nad Wielką Krokwią" loading="lazy" width="640" height="480">
+        <h3><svg class="ik" aria-hidden="true"><use href="#i-wiatr"/></svg>Lot</h3>
+        <p>Gałką trzymasz postawę w zielonym. W zawodach linia na zeskoku pokazuje, ile trzeba do lidera.</p>
+      </li>
+      <li class="krok pojaw">
+        <div class="nr">4</div>
+        <img src="img/telemark-planica.jpg" alt="Telemark w Planicy o zachodzie słońca" loading="lazy" width="640" height="480">
+        <h3><svg class="ik" aria-hidden="true"><use href="#i-ladowanie"/></svg>Telemark</h3>
+        <p>Pierścień robi się zielony – wciskasz B i A razem. Jeden przycisk to pewne lądowanie na dwie nogi.</p>
+      </li>
+      <li class="krok pojaw">
+        <div class="nr">5</div>
+        <img src="img/wynik-zakopane.jpg" alt="Wynik skoku z notami sędziów" loading="lazy" width="640" height="480">
+        <h3><svg class="ik" aria-hidden="true"><use href="#i-puchar"/></svg>Noty</h3>
+        <p>Pięciu sędziów, punkty za odległość, styl, wiatr i belkę. Gra pokaże, za co odjęli.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="blok" id="funkcje" style="padding-top: 20px">
+  <div class="wrap">
+    <div class="pojaw">
+      <span class="etykieta">Funkcje</span>
+      <h2>Co potrafi Orli Lot</h2>
+      <p class="wstep">Mała paczka, a w środku cały sezon: od treningu na Krokwi po loty na mamutach.</p>
+    </div>
+
+    <div class="bento">
+      <article class="kafel w2 pojaw">
+        <div class="ikona"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5c4 1 7 4 9 8l9 6"/><path d="M3 21h18"/></svg></div>
+        <h3>27 prawdziwych skoczni</h3>
+        <p>Wielka Krokiew, Malinka, Bergisel, Letalnica i inne. Od K85 w Karpaczu do mamutów K200.</p>
+        <div class="marquee" aria-hidden="true" id="marquee"></div>
+      </article>
+
+      <article class="kafel pojaw">
+        <div class="ikona zi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg></div>
+        <h3>Wybicie co do setnej</h3>
+        <p>Pasek pokaże, czy trafiłeś. Za wcześnie? Gra powie o ile.</p>
+        <div class="pasek-wyb">
+          <div class="wrap-b"><div class="belka"><div class="zolte"></div><div class="zielone"></div></div><div class="znacznik"></div></div>
+          <p>Dobre wybicie <span>za wcześnie o 0,03 s</span></p>
+        </div>
+      </article>
+
+      <article class="kafel pojaw">
+        <div class="ikona zo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4zM17 6h3v2a3 3 0 01-3 3M7 6H4v2a3 3 0 003 3"/></svg></div>
+        <h3>Noty jak w TV</h3>
+        <p>Wchodzą po kolei. Najwyższa i najniższa skreślone. Najlepsi stają na podium.</p>
+        <div class="noty"><span class="skr">18,5</span><span>18,0</span><span>18,0</span><span>17,5</span><span class="skr">17,0</span></div>
+        <div class="razem"><span>Za styl</span><b>53,5 pkt</b></div>
+      </article>
+
+      <article class="kafel w2 kafel-swiatlo pojaw">
+        <div>
+          <div class="ikona zi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9l10-5 10 5-10 5L2 9z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/></svg></div>
+          <h3>Samouczek</h3>
+          <p>Pierwszy skok krok po kroku. Gra staje w odpowiedniej chwili i mówi, co wcisnąć. Przy pierwszym uruchomieniu menu zaczyna właśnie od niego.</p>
+        </div>
+        <div class="sam" aria-hidden="true">
+          <i>A</i>
+          <div><b>Teraz wybicie!</b><span>Naciśnij A, gdy znacznik jest w zielonym polu.</span><span>Za wcześnie albo za późno = krótszy skok.</span><small><i>A</i>wybicie</small></div>
+        </div>
+      </article>
+
+      <article class="kafel pojaw">
+        <div class="ikona zi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20L21 8"/><path d="M14 13V4h5l-1.5 2L19 8h-5"/></svg></div>
+        <h3>Linia lidera</h3>
+        <p>W zawodach linia na zeskoku pokazuje, ile trzeba do prowadzenia. Miniesz ją – metry robią się żółte.</p>
+      </article>
+
+      <article class="kafel pojaw">
+        <div class="ikona zo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg></div>
+        <h3>Za co odjęli</h3>
+        <p>Przy notach żółty napis mówi, co kosztowało punkty: wybicie, lot czy lądowanie.</p>
+        <div class="chipy"><span class="c2">lot −1,5</span><span class="c2">wybicie −0,5</span></div>
+      </article>
+
+      <article class="kafel kafel-foto h2 pojaw">
+        <img src="img/gracze.jpg" alt="Ekran startu z napisem: Skacze Gracz 2" loading="lazy" width="640" height="480">
+        <div class="tresc">
+          <div class="ikona fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2 20c.8-3.5 3.6-5.5 7-5.5s6.2 2 7 5.5"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17 14.5c2.6.2 4.3 2 5 4.5"/></svg></div>
+          <h3>Gra na zmianę</h3>
+          <p>Do 4 osób na jednej konsoli. Każdy wpisuje swoje imię i skacze po kolei – jak w prawdziwym konkursie.</p>
+        </div>
+      </article>
+
+      <article class="kafel pojaw">
+        <div class="ikona"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h11a3 3 0 10-3-3M3 16h15a3 3 0 11-3 3M3 12h7"/></svg></div>
+        <h3>Wiatr i belka</h3>
+        <p>Wiatr żyje przez cały skok, a skala pokazuje, czy wieje pod narty, czy w plecy. W zawodach jury przesuwa belkę.</p>
+        <div class="wiatr">
+          <span class="pod"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m0 0l6-6m-6 6l6 6"/></svg>+1,1 m/s</span>
+          <span class="plecy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg>−2,7 m/s</span>
+          <span class="bel">Belka 12</span>
+        </div>
+      </article>
+
+      <article class="kafel w2 kafel-kraje pojaw">
+        <div>
+          <div class="ikona cz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V4m0 0h12l-2 4 2 4H4"/></svg></div>
+          <h3>Skacz za swój kraj</h3>
+          <p>W konkursie drużynowym wybierasz jeden z 14 krajów. Na liście widać flagę i skład, a Ty zastępujesz najsłabszego skoczka.</p>
+        </div>
+        <img src="img/kraje.jpg" alt="Lista krajów z flagami, wybrana Polska" loading="lazy" width="338" height="424">
+      </article>
+
+      <article class="kafel pojaw">
+        <div class="ikona fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 109-9 9.7 9.7 0 00-6.7 2.8L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg></div>
+        <h3>Powtórki</h3>
+        <p>Zwolnione tempo zaraz po skoku. R1 zapisuje najlepsze na później.</p>
+      </article>
+
+      <article class="kafel pojaw">
+        <div class="ikona zo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>
+        <h3>Rywale</h3>
+        <p>Zmyślona czołówka świata. Ty wybierasz, jak mocno mają skakać.</p>
+        <div class="chipy"><span class="c1">łatwi</span><span class="c2">średni</span><span class="c3">mocni</span></div>
+      </article>
+
+      <article class="kafel pojaw">
+        <div class="ikona"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></div>
+        <h3>Pora i pogoda</h3>
+        <p>Trzy pory dnia i 8 rodzajów pogody: mgła, chmury, śnieg, zawieja. Bywa też zorza polarna.</p>
+        <div class="pory">
+          <figure><img src="img/pogoda-mgla.jpg" alt="Belka w Oslo w dzień, gęsta mgła" loading="lazy" width="480" height="330"><figcaption>Dzień · mgła</figcaption></figure>
+          <figure><img src="img/pogoda-zawieja.jpg" alt="Belka w Oslo o zachodzie słońca, zawieja" loading="lazy" width="480" height="330"><figcaption>Zachód · zawieja</figcaption></figure>
+          <figure><img src="img/pogoda-zorza.jpg" alt="Wybieg w Oslo wieczorem, nad lasem zorza polarna" loading="lazy" width="480" height="330"><figcaption>Wieczór · zorza</figcaption></figure>
+        </div>
+      </article>
+
+      <article class="kafel w4 pojaw">
+        <div class="ikona cz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V4m0 0h12l-2 4 2 4H4"/></svg></div>
+        <h3>7 trybów gry</h3>
+        <div class="tryby">
+          <div><b>Konkurs online</b><span>Codziennie inna skocznia i wspólny ranking.</span></div>
+          <div><b>Kariera</b><span>Od Ligi Krajowej przez Ligę Kontynentalną do Ligi Światowej.</span></div>
+          <div><b>Zawody</b><span>Dwie serie z rywalami z całego świata.</span></div>
+          <div><b>Drużyny</b><span>14 krajów do wyboru, 8 drużyn w konkursie.</span></div>
+          <div><b>Liga Światowa</b><span>10 konkursów i klasyfikacja generalna.</span></div>
+          <div><b>Turniej Noworoczny</b><span>Cztery skocznie i pojedynki w pierwszej serii.</span></div>
+          <div class="caly"><b>Trening</b><span>Skaczesz do woli, sam wybierasz belkę. Na początek jest samouczek: jeden skok krok po kroku.</span></div>
+        </div>
+      </article>
+
+      <article class="kafel w2 kafel-swiatlo pojaw">
+        <div>
+          <div class="ikona zo"><svg class="ik-kafel" aria-hidden="true"><use href="#i-lampa"/></svg></div>
+          <h3>Reflektory i cienie</h3>
+          <p>Wieczorem skocznię oświetlają lampy, drzewa i tor rzucają cienie, a w locie widać góry i chmury.</p>
+        </div>
+        <img src="img/wieczor-planica.jpg" alt="Rozbieg w Planicy wieczorem, z przodu świecą reflektory" loading="lazy" width="640" height="480">
+      </article>
+
+      <article class="kafel pojaw">
+        <div class="ikona zi"><svg class="ik-kafel" aria-hidden="true"><use href="#i-medal"/></svg></div>
+        <h3>Rekordy</h3>
+        <p>Rekord skoczni i Twój najlepszy skok na każdej z 27.</p>
+      </article>
+
+      <article class="kafel pojaw">
+        <div class="ikona"><svg class="ik-kafel" aria-hidden="true"><use href="#i-globus"/></svg></div>
+        <h3>Konkurs online</h3>
+        <p>Codziennie inna skocznia i wspólny ranking online. Skaczesz obok ducha lidera, a punkty liczy serwer, więc ranking jest uczciwy.</p>
+      </article>
+
+      <article class="kafel w2 kafel-swiatlo pojaw">
+        <img src="img/podium-planica.jpg" alt="Podium w Planicy wieczorem: trzech skoczków z medalami, flagi i konfetti" loading="lazy" width="640" height="370">
+        <div>
+          <div class="ikona zo"><svg class="ik-kafel" aria-hidden="true"><use href="#i-puchar"/></svg></div>
+          <h3>Podium</h3>
+          <p>Skończysz w pierwszej trójce? Stajesz na podium: medale, flagi i konfetti, a pasek na dole ogłasza miejsca jak w telewizji.</p>
+        </div>
+      </article>
+
+      <article class="kafel pojaw">
+        <div class="ikona zi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></div>
+        <h3>Bezpieczny zapis</h3>
+        <p>Bateria padła w trakcie zapisu? Kariera, rekordy i powtórki i tak zostają.</p>
+      </article>
+
+      <article class="kafel pojaw">
+        <div class="ikona"><svg class="ik-kafel" aria-hidden="true"><use href="#i-pobierz"/></svg></div>
+        <h3>Nowe wersje w grze</h3>
+        <p>Karta Wersja w menu sprawdza, czy jest coś nowego, i pobiera to przez Wi-Fi.</p>
+      </article>
+
+      <article class="kafel w2 kafel-poz pojaw">
+        <div>
+          <div class="ikona fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+          <h3>Muzyka i kibice</h3>
+          <p>Własna muzyczka w menu, gong na zielonym i doping z trybun. Flesze na trybunach, a na podium fajerwerki.</p>
+        </div>
+        <div class="eq" aria-hidden="true" id="eq"></div>
+      </article>
+
+      <article class="kafel pojaw">
+        <div class="ikona zi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg></div>
+        <h3>4 języki</h3>
+        <p>Zmiana jednym przyciskiem w menu.</p>
+        <div class="chipy"><span>PL</span><span>EN</span><span>DE</span><span>CS</span></div>
+      </article>
+
+      <article class="kafel pojaw">
+        <div class="ikona"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a7 7 0 00-7 7v11l2.5-2 2.5 2 2-2 2 2 2.5-2 2.5 2V10a7 7 0 00-7-7z"/><path d="M9 10h.01M15 10h.01"/></svg></div>
+        <h3>Duch rekordu</h3>
+        <p>Włączasz w ustawieniach i skaczesz obok swojego najlepszego skoku.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="blok" id="sterowanie" style="padding-top: 20px">
+  <div class="wrap">
+    <div class="pojaw">
+      <span class="etykieta">Sterowanie</span>
+      <h2>Wszystko pod kciukiem</h2>
+      <p class="wstep">Gra jest zrobiona pod pada R36S. Bez myszki, bez klawiatury.</p>
+    </div>
+    <div class="ster-uklad pojaw">
+      <div class="ster-konsola">
+        <div class="konsola mala" id="konsolaMala" aria-hidden="true">
+          <span class="tyl" data-p="l1">L1</span>
+          <span class="tyl t-r" data-p="r1">R1</span>
+          <div class="ramka"><div class="ekran"><div class="obudzona"><svg viewBox="0 24 282 60"><use href="#logo-znak"/><use href="#logo-tekst"/><use href="#logo-podpis"/></svg></div></div></div>
+          <div class="krzyzak" data-p="krzyzak"><div class="srodek"></div><div class="kl g"></div><div class="kl l"></div><div class="kl p"></div><div class="kl d"></div></div>
+          <div class="glosnik">
+            <div><i></i><i class="kr"></i><i></i></div>
+            <div><i class="kr"></i><i></i><i class="kr"></i></div>
+            <div><i></i><i class="kr"></i><i></i></div>
+          </div>
+          <div class="abxy">
+            <div class="kl x" data-p="x">X</div>
+            <div class="kl y" data-p="y">Y</div>
+            <div class="kl a" data-p="a">A</div>
+            <div class="kl b" data-p="b">B</div>
+          </div>
+          <span class="napis n-fn">FN</span>
+          <div class="okragly fn"></div>
+          <div class="okragly se" data-p="select"></div>
+          <i class="dziurka"></i>
+          <div class="okragly st" data-p="start"></div>
+          <span class="napis n-se">SELECT</span>
+          <span class="napis n-st">START</span>
+          <div class="galka l" data-p="galki"></div>
+          <div class="galka p" data-p="galki"></div>
+        </div>
+        <p>Wskaż wiersz, a konsolka pokaże przycisk</p>
+      </div>
+      <div>
+        <h3 class="ster-grupa"><svg class="ik" aria-hidden="true"><use href="#i-skok"/></svg>W skoku</h3>
+        <ul class="ster">
+        <li data-sw="a"><div class="klaw"><kbd class="ok a">A</kbd></div><div><b>Start z belki</b><span>Czekasz na zielone, potem A</span></div></li>
+        <li data-sw="a"><div class="klaw"><kbd class="ok a">A</kbd></div><div><b>Wybicie</b><span>Tuż przed progiem, trafiaj w zielone pole paska</span></div></li>
+        <li data-sw="galki krzyzak"><div class="klaw"><kbd>Gałka</kbd><span class="plus">/</span><kbd><svg class="ik" aria-hidden="true"><use href="#i-krzyzak"/></svg></kbd></div><div><b>Postawa w locie</b><span>Góra / dół – trzymaj się w zielonym. Każda gałka działa</span></div></li>
+        <li data-sw="a b"><div class="klaw"><kbd class="ok a">A</kbd><span class="plus">/</span><kbd class="ok b">B</kbd></div><div><b>Lądowanie na dwie nogi</b><span>Gdy pierścień zrobi się zielony. Jeden przycisk wystarczy, mniej punktów, ale wytrzyma mocniejsze lądowanie</span></div></li>
+        <li data-sw="b a"><div class="klaw"><kbd class="ok b">B</kbd><span class="plus">+</span><kbd class="ok a">A</kbd></div><div><b>Telemark</b><span>Oba razem albo zaraz po sobie. Pełne noty</span></div></li>
+        <li data-sw="krzyzak galki"><div class="klaw"><kbd>←</kbd><kbd>→</kbd></div><div><b>Belka</b><span>W treningu wybierasz ją przed startem, w zawodach ustawia jury</span></div></li>
+        <li data-sw="krzyzak galki x"><div class="klaw"><kbd>↑</kbd><kbd>↓</kbd><kbd class="ok x">X</kbd></div><div><b>Pogoda i pora</b><span>W treningu na belce: góra / dół zmienia pogodę, X porę dnia</span></div></li>
+        <li data-sw="start"><div class="klaw"><kbd>Start</kbd></div><div><b>Pauza</b><span>Na belce, na rozbiegu i w locie. Select w pauzie wraca do menu</span></div></li>
+        </ul>
+        <h3 class="ster-grupa"><svg class="ik" aria-hidden="true"><use href="#i-powtorka"/></svg>Po skoku</h3>
+        <ul class="ster">
+        <li data-sw="a"><div class="klaw"><kbd class="ok a">A</kbd></div><div><b>Dalej</b><span>Następny skok albo tabela</span></div></li>
+        <li data-sw="x"><div class="klaw"><kbd class="ok x">X</kbd></div><div><b>Powtórka</b><span>Obejrzyj skok jeszcze raz</span></div></li>
+        <li data-sw="r1"><div class="klaw"><kbd>R1</kbd></div><div><b>Zapis powtórki</b><span>Zapisuje skok na później, w menu Powtórki</span></div></li>
+        <li data-sw="krzyzak galki"><div class="klaw"><kbd>←</kbd><kbd>→</kbd></div><div><b>Tempo powtórki</b><span>Wolniej albo szybciej</span></div></li>
+        </ul>
+        <h3 class="ster-grupa"><svg class="ik" aria-hidden="true"><use href="#i-menu"/></svg>W menu</h3>
+        <ul class="ster">
+        <li data-sw="krzyzak galki"><div class="klaw"><kbd>←</kbd><kbd>→</kbd></div><div><b>Wybór karty</b><span>Krzyżak albo gałka; na liście Zawodów góra i dół</span></div></li>
+        <li data-sw="a"><div class="klaw"><kbd class="ok a">A</kbd></div><div><b>Zatwierdź</b><span>Otwiera wybraną kartę</span></div></li>
+        <li data-sw="select"><div class="klaw"><kbd>Select</kbd></div><div><b>Wróć i język</b><span>W menu głównym zmienia język, gdzie indziej wraca</span></div></li>
+        <li data-sw="select start"><div class="klaw"><kbd>Select</kbd><span class="plus">+</span><kbd>Start</kbd></div><div><b>Wyjście z gry</b><span>Razem, w każdej chwili</span></div></li>
+        </ul>
+        <p class="uwaga"><svg class="ik" aria-hidden="true"><use href="#i-uwaga"/></svg><span><b>B</b> działa jak A, a <b>Y</b> jak X.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="blok" id="pobierz" style="padding-top: 20px">
+  <div class="wrap">
+    <div class="pobierz pojaw">
+      <div>
+        <span class="etykieta">Pobierz</span>
+        <h2>Zagraj na swojej R36S</h2>
+        <p class="wstep" style="margin-bottom: 0">Jeden plik zip, wgrywasz na kartę i grasz. Za darmo.</p>
+        <div class="wersja"><span>Wersja 1.3.5</span><span>zip · 294 KB</span><span>05.11.2026</span></div>
+        <a class="btn btn-glowny" href="https://github.com/sebastian-nni/orlilot/releases/download/v1.3.5/orli-lot-1.3.5-r36s.zip" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0l-5-5m5 5l5-5M5 20h14"/></svg>
+          Pobierz Orli Lot
+        </a>
+        <p class="dziala">Sprawdzone na R36S z ArkOS i dArkOS. Kolejne wersje pobierzesz już w grze, z karty Wersja w menu. <a href="https://github.com/sebastian-nni/orlilot/releases">Wszystkie wersje</a></p>
+      </div>
+      <div>
+        <h3 class="jak-tytul">Jak wgrać</h3>
+        <ol class="jak">
+          <li><b>Rozpakuj zip</b><span>W środku jest plik <code>Orli Lot.sh</code> i folder <code>orlilot</code>.</span></li>
+          <li><b>Skopiuj na kartę</b><span>Oba wrzuć do folderu <code>ports</code> na karcie z grami.</span></li>
+          <li><b>Uruchom ponownie konsolę</b><span>Albo odśwież listę gier w menu.</span></li>
+          <li><b>Graj</b><span>Wejdź w Ports → Orli Lot.</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#gora" aria-label="Orli Lot – na górę"><svg class="logo-nap" viewBox="0 24 282 44" aria-hidden="true"><use href="#logo-znak"/><use href="#logo-tekst"/></svg></a>
+    <span>Autor: Sebastian Kowalski · 2026 · Gra niezależna, niepowiązana z FIS. Zawodnicy są zmyśleni.</span>
+    <a href="#gora">Do góry ↑</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var ruch = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var ekrany = [
+    { src: 'img/menu.jpg', t: 'Menu', o: 'Konkurs online, kariera, zawody i trening' },
+    { src: 'img/belka-planica.jpg', t: 'Zielone światło', o: 'Planica · Letalnica K200 · wieczór' },
+    { src: 'img/rozbieg-wisla.jpg', t: 'Rozbieg', o: 'Wisła · Malinka K120 · wieczór' },
+    { src: 'img/lot-zakopane.jpg', t: 'Lot', o: 'Zakopane · Wielka Krokiew K125 · dzień' },
+    { src: 'img/ladowanie-wisla.jpg', t: 'Lądowanie', o: 'Wisła · Malinka K120 · wieczór' },
+    { src: 'img/telemark-planica.jpg', t: 'Telemark', o: 'Planica · Letalnica K200 · zachód' },
+    { src: 'img/noty-zakopane.jpg', t: 'Noty sędziów', o: 'Zakopane · Wielka Krokiew K125 · dzień' },
+    { src: 'img/wynik-planica.jpg', t: 'Wynik', o: '191 metrów na Letalnicy' },
+    { src: 'img/zorza-oslo.jpg', t: 'Zorza polarna', o: 'Oslo · Holmenkollen K120 · wieczór' },
+    { src: 'img/podium-planica.jpg', t: 'Podium', o: 'Planica · Letalnica K200 · wieczór' }
+  ];
+  var ekran = document.getElementById('ekran');
+  var tytul = document.getElementById('ekranTytul');
+  var opis = document.getElementById('ekranOpis');
+  var kropki = document.getElementById('kropki');
+  var obrazy = [], przyciski = [], nr = 0, zegar = 0, wstrzymane = false;
+
+  ekrany.forEach(function (e, i) {
+    var img = new Image();
+    img.src = e.src; img.alt = e.t + ' – ' + e.o; img.width = 640; img.height = 480;
+    if (i > 0) img.loading = 'lazy';
+    ekran.appendChild(img);
+    obrazy.push(img);
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Ekran ' + (i + 1) + ': ' + e.t);
+    b.addEventListener('click', function () { pokaz(i); restart(); });
+    kropki.appendChild(b);
+    przyciski.push(b);
+  });
+
+  function pokaz(i) {
+    nr = (i + ekrany.length) % ekrany.length;
+    obrazy.forEach(function (im, k) { im.classList.toggle('widoczny', k === nr); });
+    przyciski.forEach(function (b, k) { b.classList.toggle('akt', k === nr); });
+    tytul.textContent = ekrany[nr].t;
+    opis.textContent = ekrany[nr].o;
+  }
+  function restart() {
+    clearInterval(zegar);
+    if (ruch) zegar = setInterval(function () { if (!wstrzymane && !document.hidden) pokaz(nr + 1); }, 3800);
+  }
+  pokaz(0);
+  restart();
+
+  var konsola = document.getElementById('konsola');
+  konsola.addEventListener('mouseenter', function () { wstrzymane = true; });
+  konsola.addEventListener('mouseleave', function () { wstrzymane = false; });
+  konsola.querySelectorAll('[data-k]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      pokaz(nr + (b.dataset.k === 'dalej' ? 1 : -1));
+      restart();
+      b.classList.add('wcisniety');
+      setTimeout(function () { b.classList.remove('wcisniety'); }, 140);
+    });
+  });
+
+  // konsola lekko obraca sie za myszka
+  var hero = document.querySelector('.hero');
+  if (ruch && window.matchMedia('(pointer: fine)').matches) {
+    hero.addEventListener('pointermove', function (e) {
+      var r = hero.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+      konsola.style.setProperty('--ry', (-7 + x * 12).toFixed(2) + 'deg');
+      konsola.style.setProperty('--rx', (3 - y * 8).toFixed(2) + 'deg');
+    });
+    hero.addEventListener('pointerleave', function () {
+      konsola.style.removeProperty('--ry');
+      konsola.style.removeProperty('--rx');
+    });
+  }
+
+  // mala konsola: wiersz sterowania zapala swoj przycisk
+  var mala = document.getElementById('konsolaMala');
+  var wiersze = document.querySelectorAll('.ster li');
+  function zapal(li) {
+    wiersze.forEach(function (w) { w.classList.toggle('akt', w === li); });
+    mala.querySelectorAll('.swieci').forEach(function (el) { el.classList.remove('swieci'); });
+    if (!li) return;
+    li.dataset.sw.split(' ').forEach(function (p) {
+      mala.querySelectorAll('[data-p="' + p + '"]').forEach(function (el) { el.classList.add('swieci'); });
+    });
+  }
+  wiersze.forEach(function (li) {
+    li.addEventListener('mouseenter', function () { zapal(li); });
+    li.addEventListener('click', function () { zapal(li); });
+  });
+  document.querySelector('.ster-uklad').addEventListener('mouseleave', function () { zapal(null); });
+
+  var nav = document.getElementById('nav');
+  function przewin() { nav.classList.toggle('przewiniete', window.scrollY > 20); }
+  window.addEventListener('scroll', przewin, { passive: true });
+  przewin();
+
+  var skocznie = [
+    ['Hinzenbach', 'Aigner-Schanze', 'K85', 'AUT'], ['Karpacz', 'Orlinek', 'K85', 'POL'], ['Ljubno', 'Savina', 'K85', 'SLO'],
+    ['Villach', 'Alpenarena', 'K90', 'AUT'], ['Zaō', 'Yamagata', 'K95', 'JPN'], ['Szczyrk', 'Skalite', 'K95', 'POL'],
+    ['Lake Placid', 'MacKenzie Intervale', 'K115', 'USA'], ['Lahti', 'Salpausselkä', 'K116', 'FIN'], ['Innsbruck', 'Bergisel', 'K120', 'AUT'],
+    ['Wisła', 'Malinka', 'K120', 'POL'], ['Oslo', 'Holmenkollen', 'K120', 'NOR'], ['Falun', 'Lugnet', 'K120', 'SWE'],
+    ['Oberstdorf', 'Schattenberg', 'K120', 'GER'], ['Ruka', 'Rukatunturi', 'K120', 'FIN'],
+    ['Sapporo', 'Ōkurayama', 'K123', 'JPN'], ['Lillehammer', 'Lysgårdsbakken', 'K123', 'NOR'], ['Zakopane', 'Wielka Krokiew', 'K125', 'POL'],
+    ['Engelberg', 'Titlis', 'K125', 'SUI'], ['Zhangjiakou', 'Snow Ruyi', 'K125', 'CHN'], ['Garmisch', 'Olympiaschanze', 'K125', 'GER'],
+    ['Bischofshofen', 'Paul-Außerleitner', 'K125', 'AUT'], ['Titisee-Neustadt', 'Hochfirst', 'K125', 'GER'],
+    ['Willingen', 'Mühlenkopf', 'K130', 'GER'], ['Bad Mitterndorf', 'Kulm', 'K200', 'AUT'], ['Oberstdorf', 'Heini-Klopfer', 'K200', 'GER'],
+    ['Planica', 'Letalnica', 'K200', 'SLO'], ['Vikersund', 'Vikersundbakken', 'K200', 'NOR']
+  ];
+  function tor(lista) {
+    var d = document.createElement('div');
+    d.className = 'tor';
+    var html = lista.map(function (s) {
+      return '<span class="sk"><small>' + s[3] + '</small>' + s[0] + ' · ' + s[1] + ' <em>' + s[2] + '</em></span>';
+    }).join('');
+    d.innerHTML = html + html;
+    return d;
+  }
+  var mq = document.getElementById('marquee');
+  mq.appendChild(tor(skocznie.slice(0, 14)));
+  mq.appendChild(tor(skocznie.slice(14)));
+
+  var eq = document.getElementById('eq');
+  for (var i = 0; i < 18; i++) {
+    var s = document.createElement('i');
+    s.style.animationDelay = (-Math.random() * 1.2).toFixed(2) + 's';
+    s.style.animationDuration = (0.8 + Math.random() * 0.8).toFixed(2) + 's';
+    eq.appendChild(s);
+  }
+
+  var pojaw = document.querySelectorAll('.pojaw');
+  if ('IntersectionObserver' in window && ruch) {
+    var io = new IntersectionObserver(function (wpisy) {
+      wpisy.forEach(function (w) {
+        if (w.isIntersecting) { w.target.classList.add('pokazany'); io.unobserve(w.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    pojaw.forEach(function (el) { io.observe(el); });
+  } else {
+    pojaw.forEach(function (el) { el.classList.add('pokazany'); });
+  }
+
+  // snieg w tle
+  var cv = document.getElementById('snieg');
+  if (!ruch || !cv.getContext) return;
+  var cx = cv.getContext('2d'), W = 0, H = 0, dpr = 1, platki = [];
+  function rozmiar() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var n = Math.round(Math.min(110, W * H / 14000));
+    platki = [];
+    for (var i = 0; i < n; i++) platki.push(nowy(true));
+  }
+  function nowy(wszedzie) {
+    var z = Math.random();
+    return { x: Math.random() * W, y: wszedzie ? Math.random() * H : -10, r: 0.6 + z * 2.2, v: 18 + z * 46, f: Math.random() * 6.28, a: 0.25 + z * 0.55 };
+  }
+  var t0 = 0;
+  function klatka(t) {
+    requestAnimationFrame(klatka);
+    var dt = t0 ? Math.min((t - t0) / 1000, 0.05) : 0.016;
+    t0 = t;
+    if (document.hidden) return;
+    cx.clearRect(0, 0, W, H);
+    for (var i = 0; i < platki.length; i++) {
+      var p = platki[i];
+      p.y += p.v * dt;
+      p.f += dt * 0.9;
+      p.x += (Math.sin(p.f) * 10 + 14) * dt;
+      if (p.y > H + 10 || p.x > W + 10) { platki[i] = nowy(false); platki[i].x = Math.random() * W * 1.1 - W * 0.1; continue; }
+      cx.globalAlpha = p.a;
+      cx.beginPath();
+      cx.arc(p.x, p.y, p.r, 0, 6.2832);
+      cx.fillStyle = '#e8f3ff';
+      cx.fill();
+    }
+  }
+  rozmiar();
+  window.addEventListener('resize', rozmiar);
+  requestAnimationFrame(klatka);
+})();
+</script>
+</body>
+</html>

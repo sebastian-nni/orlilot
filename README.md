@@ -14,7 +14,7 @@
     <img src="https://img.shields.io/badge/Pobierz-Orli%20Lot%201.3.5-2ea44f?style=for-the-badge" alt="Pobierz Orli Lot 1.3.5">
   </a>
   <br>
-  <sub>zip · 294 KB · 05.11.2026 · <a href="https://github.com/sebastian-nni/orlilot/releases">wszystkie wersje</a></sub>
+  <sub>zip · 294 KB · 05.11.2026 · <a href="https://github.com/sebastian-nni/orlilot/releases">wszystkie wersje</a> · <a href="https://sebastian-nni.github.io/orlilot/">strona gry</a></sub>
 </p>
 
 <table>
