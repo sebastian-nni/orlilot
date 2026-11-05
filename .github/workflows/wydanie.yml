@@ -3,7 +3,7 @@ name: Wydanie
 on:
   push:
     branches: [main]
-    paths: ['pobierz/**', 'wydania/**']
+    paths: ['pobierz/**', 'wydania/**', '.github/workflows/wydanie.yml']
   workflow_dispatch:
 
 permissions:
@@ -15,14 +15,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Wydanie z paczki
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Paczka, binarka i wersja.txt
+        id: pliki
         run: |
           set -e
           ls pobierz/orli-lot-*-r36s.zip
           PACZKA=$(ls pobierz/orli-lot-*-r36s.zip | sort -V | tail -n 1)
           WER=$(basename "$PACZKA" | sed -E 's/^orli-lot-(.+)-r36s\.zip$/\1/')
+          mkdir -p wyd
+          unzip -p "$PACZKA" orlilot/orlilot > wyd/orlilot
+          python3 - "$WER" wyd/orlilot <<'EOF'
+          import hashlib, sys
+          wer, sciezka = sys.argv[1], sys.argv[2]
+          dane = open(sciezka, 'rb').read()
+          if dane[:4] != b'\x7fELF':
+              sys.exit('w zipie nie ma binarki orlilot/orlilot')
+          if b'\x00' + wer.encode() + b'\x00' not in dane:
+              sys.exit('binarka nie ma wersji ' + wer + ' (inny numer niz w nazwie zipa?)')
+          open('wyd/wersja.txt', 'w', newline='\n').write('%s %s %d\n' % (wer, hashlib.sha256(dane).hexdigest(), len(dane)))
+          EOF
+          cat wyd/wersja.txt
+          echo "paczka=$PACZKA" >> "$GITHUB_OUTPUT"
+          echo "wer=$WER" >> "$GITHUB_OUTPUT"
+
+      - name: Wydanie
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PACZKA: ${{ steps.pliki.outputs.paczka }}
+          WER: ${{ steps.pliki.outputs.wer }}
+        run: |
+          set -e
           TAG="v$WER"
           OPIS="wydania/$WER.md"
           if [ ! -f "$OPIS" ]; then
@@ -31,7 +53,9 @@ jobs:
           fi
           if gh release view "$TAG" > /dev/null 2>&1; then
             gh release upload "$TAG" "$PACZKA" --clobber
+            gh release upload "$TAG" wyd/orlilot --clobber
+            gh release upload "$TAG" wyd/wersja.txt --clobber
             gh release edit "$TAG" --notes-file "$OPIS"
           else
-            gh release create "$TAG" "$PACZKA" --target "$GITHUB_SHA" --title "Orli Lot $WER" --notes-file "$OPIS" --latest
+            gh release create "$TAG" "$PACZKA" wyd/orlilot wyd/wersja.txt --target "$GITHUB_SHA" --title "Orli Lot $WER" --notes-file "$OPIS" --latest
           fi
