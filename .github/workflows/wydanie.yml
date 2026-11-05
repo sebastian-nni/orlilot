@@ -1,0 +1,37 @@
+name: Wydanie
+
+on:
+  push:
+    branches: [main]
+    paths: ['pobierz/**', 'wydania/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  wydanie:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wydanie z paczki
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          ls pobierz/orli-lot-*-r36s.zip
+          PACZKA=$(ls pobierz/orli-lot-*-r36s.zip | sort -V | tail -n 1)
+          WER=$(basename "$PACZKA" | sed -E 's/^orli-lot-(.+)-r36s\.zip$/\1/')
+          TAG="v$WER"
+          OPIS="wydania/$WER.md"
+          if [ ! -f "$OPIS" ]; then
+            printf 'Orli Lot %s – skoki narciarskie w 3D na konsolkę R36S.\n\nPobierz plik %s niżej.\n' "$WER" "$(basename "$PACZKA")" > /tmp/opis.md
+            OPIS=/tmp/opis.md
+          fi
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release upload "$TAG" "$PACZKA" --clobber
+            gh release edit "$TAG" --notes-file "$OPIS"
+          else
+            gh release create "$TAG" "$PACZKA" --target "$GITHUB_SHA" --title "Orli Lot $WER" --notes-file "$OPIS" --latest
+          fi
