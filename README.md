@@ -44,13 +44,11 @@ Sprawdzone na R36S z ArkOS i dArkOS. Kolejne wersje pobierzesz już w grze – k
 
 ## Jak się skacze
 
-| | |
-|---|---|
-| **Zielone światło** | Siadasz na belce, zegar odlicza 10 sekund. Wciskasz A i jazda. |
-| **Wybicie** | A tuż przed progiem. Gra powie, czy było za wcześnie. Bez wybicia nie polecisz. |
-| **Lot** | Gałką trzymasz postawę w zielonym. Linia na zeskoku pokazuje, ile trzeba do lidera. |
-| **Lądowanie** | Gdy pierścień zrobi się zielony: B i A razem = telemark, jeden przycisk = dwie nogi. |
-| **Noty** | Pięciu sędziów, punkty za odległość, styl, wiatr i belkę. Gra pokaże, za co odjęli. |
+1. **Zielone światło** – siadasz na belce, zegar odlicza 10 sekund. Wciskasz A i jazda.
+2. **Wybicie** – A tuż przed progiem. Gra powie, czy było za wcześnie. Bez wybicia nie polecisz.
+3. **Lot** – gałką trzymasz postawę w zielonym. Linia na zeskoku pokazuje, ile trzeba do lidera.
+4. **Lądowanie** – gdy pierścień zrobi się zielony: B i A razem = telemark, jeden przycisk = dwie nogi.
+5. **Noty** – pięciu sędziów, punkty za odległość, styl, wiatr i belkę. Gra pokaże, za co odjęli.
 
 ## Co jest w grze
 
