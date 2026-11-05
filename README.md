@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img/baner.png" alt="Orli Lot" width="640">
+  <img src="docs/img/baner.png" alt="Orli Lot" width="640">
 </p>
 
 <h3 align="center">Skoki narciarskie w 3D na konsolkę R36S</h3>
@@ -19,16 +19,16 @@
 
 <table>
   <tr>
-    <td><img src="img/belka-planica.jpg" alt="Belka w Planicy wieczorem"></td>
-    <td><img src="img/lot-planica.jpg" alt="Lot w Planicy"></td>
+    <td><img src="docs/img/belka-planica.jpg" alt="Belka w Planicy wieczorem"></td>
+    <td><img src="docs/img/lot-planica.jpg" alt="Lot w Planicy"></td>
   </tr>
   <tr>
-    <td><img src="img/noty-zakopane.jpg" alt="Noty sędziów w Zakopanem"></td>
-    <td><img src="img/zorza-oslo.jpg" alt="Zorza polarna w Oslo"></td>
+    <td><img src="docs/img/noty-zakopane.jpg" alt="Noty sędziów w Zakopanem"></td>
+    <td><img src="docs/img/zorza-oslo.jpg" alt="Zorza polarna w Oslo"></td>
   </tr>
   <tr>
-    <td><img src="img/podium-planica.jpg" alt="Podium"></td>
-    <td><img src="img/menu.jpg" alt="Menu gry"></td>
+    <td><img src="docs/img/podium-planica.jpg" alt="Podium"></td>
+    <td><img src="docs/img/menu.jpg" alt="Menu gry"></td>
   </tr>
 </table>
 
